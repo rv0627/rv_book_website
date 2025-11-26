@@ -59,15 +59,14 @@ class AdminController extends Controller
                 'password' => ['required', 'string', 'min:6', 'confirmed'],
             ]);
 
-            $admin = Admin::create([
+            Admin::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
             ]);
 
-            $request->session()->put('admin_id', $admin->id);
-
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin.login')
+                ->with('status', 'Registration successful! Please login to continue.');
         } catch (\Throwable $e) {
             Log::error('Admin registration failed', ['error' => $e->getMessage()]);
 
@@ -90,6 +89,14 @@ class AdminController extends Controller
     public function dashboard(Request $request)
     {
         try {
+            $adminId = $request->session()->get('admin_id');
+            $admin = Admin::find($adminId);
+
+            if (!$admin) {
+                return redirect()->route('admin.login')
+                    ->withErrors(['email' => 'Please log in again.']);
+            }
+
             $authorSearch = $request->input('author_search');
             $publisherSearch = $request->input('publisher_search');
             $bookSearch = $request->input('book_search');
@@ -110,6 +117,7 @@ class AdminController extends Controller
             }
 
             return view('admin.dashboard', [
+                'admin' => $admin,
                 'authors' => $authorQuery->orderBy('name')->get(),
                 'publishers' => $publisherQuery->orderBy('name')->get(),
                 'books' => $bookQuery->latest()->get(),

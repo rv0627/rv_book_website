@@ -57,20 +57,26 @@
 <body class="min-h-screen bg-gray-100 font-sans">
     <div class="min-h-screen flex flex-col">
         <header class="bg-white shadow">
-            <div class="max-w-6xl mx-auto px 4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-book-open text-laravel text-2xl"></i>
                     <span class="text-xl font-bold text-gray-800">Rv<span class="text-laravel">Books</span> Admin</span>
                 </div>
-                <form method="POST" action="{{ route('admin.logout') }}">
-                    @csrf
-                    <button
-                        type="submit"
-                        class="inline-flex items-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300">
-                        <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i>
-                        Logout
-                    </button>
-                </form>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 text-sm text-gray-700">
+                        <i class="fa-solid fa-user-circle text-blue-500"></i>
+                        <span class="font-medium">{{ $admin->name }}</span>
+                    </div>
+                    <form method="POST" action="{{ route('admin.logout') }}">
+                        @csrf
+                        <button
+                            type="submit"
+                            class="inline-flex items-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300">
+                            <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i>
+                            Logout
+                        </button>
+                    </form>
+                </div>
             </div>
         </header>
 
